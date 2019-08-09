@@ -2,8 +2,8 @@
 
 GITHUB_URL="https://github.com/chankruze/gdrivedl/";
 ISSUES_URL="https://github.com/chankruze/gdrivedl/issues";
-WEBSITE_URL="https://rubygems.org/gems/gdrivedl";
-VERSION=$(gem list gdrivedl --remote | grep gdrivedl | cut -d'(' -f2 | cut -d')' -f1);
+WEBSITE_URL="https://geekofia.in/gdrivedl";
+VERSION=1.0.4
 
 red=`tput setaf 1`
 green=`tput setaf 2`
@@ -42,17 +42,18 @@ example() {
 }
 
 info() {
-    echo "${green}------- Instructions -------${reset}"
+    echo "${green}===== Instructions =====${reset}"
+    echo ""
     echo "The 'FILE_NAME' argument is the name of the file you want to save as."
     echo "It can also be a path. For example '/home/user/test/demo.zip'"
     echo ""
     echo "The 'FILE_ID' argument is the google drive's unique ID for the particular file."
     echo "This id is alpha numeric and can be found in described cases below:"
     echo ""
-    echo "  1. https://drive.google.com/uc?id=FILE_ID&export=download"
-    echo "  2. https://drive.google.com/file/d/FILE_ID/view"
-    echo "  3. https://drive.google.com/open?id=FILE_ID"
-    echo "  4. https://doc-0o-68-docs.googleusercontent.com/docs/securesc/../../../FILE_ID?e=download"
+    echo "  1. https://drive.google.com/uc?id=${green}FILE_ID${reset}&export=download"
+    echo "  2. https://drive.google.com/file/d/${green}FILE_ID${reset}/view"
+    echo "  3. https://drive.google.com/open?id=${green}FILE_ID${reset}"
+    echo "  4. https://doc-0o-68-docs.googleusercontent.com/docs/securesc/../../../${green}FILE_ID${reset}?e=download"
     echo ""
     echo "Report bugs/issues at <$ISSUES_URL>"
     echo ""
@@ -89,29 +90,31 @@ while getopts ":i:s:h" o; do
             s=${OPTARG}
             ;;
         h)
-            usage;
-            example;
-            info
+            info;
             ;;
-        *)
-            usage
-            ;;
+        # *)
+        #     usage
+        #     ;;
     esac
 done
 shift $((OPTIND-1))
 
 if [ -z "${i}" ] && [ -z "${s}" ]; then
+if [ -z "${h}" ]; then
+    usage;
+    example;
+    exit 1;
+fi
     error 1;
     exit 1;
 elif [ -z "${i}" ] || [ -z "${s}" ]; then
-if [ -z "${h}" ]; then
+
 if [ -z "${i}" ]; then
     error 2;
     exit 1;
 elif [ -z "${s}" ]; then
     error 3;
     exit 1;
-fi
 else
 usage;
 example;
@@ -127,3 +130,5 @@ echo "";
 cookies=$(wget --quiet --save-cookies /tmp/cookies.txt --keep-session-cookies --no-check-certificate "https://docs.google.com/uc?export=download&id=$i" -O- | sed -rn 's/.*confirm=([0-9A-Za-z_]+).*/\1\n/p')
 wget --load-cookies /tmp/cookies.txt "https://docs.google.com/uc?export=download&confirm=$cookies&id=$i" -O $s
 rm -rf /tmp/cookies.txt
+echo "";
+echo "${green}Done !${reset}";
