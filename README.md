@@ -10,18 +10,32 @@ Coded with ❤ for developers, will help them downloading files uploaded to goog
  
 ## Installation
 
-- Direct Download
-  -  Download from https://github.com/chankruze/gdrivedl/raw/gdrivedl/gdrivedl
+Download the debian package from this repo [releases](https://github.com/chankruze/gdrivedl/releases). Then install it as any normal installation.
 
 Example:
 ```
-chankruze@geekofia-cloud:~$ sudo cp gdrivedl /usr/local/bin
+$ sudo dpkg -i gdrivedl_1.0.3_all.deb 
+Selecting previously unselected package gdrivedl.
+(Reading database ... 246567 files and directories currently installed.)
+Preparing to unpack gdrivedl_1.0.3_all-2.deb ...
+Unpacking gdrivedl (1.0.3) ...
+Setting up gdrivedl (1.0.3) ...
 ```
 
 ## Usage
 
 - `gdrivedl [-i <FILE_ID>] [-s <FILE_NAME>]`
 - Example: `gdrivedl 1xvhbFWetzTf9a1TueWJBcrzzVPycG1dg gdrivedl_demo.txt`
+
+## Instructions
+-The `FILE_NAME` argument is the name of the file you want to save as. It can also be a path. For example `/home/user/test/demo.zip`
+- The `FILE_ID` argument is the google drive's unique ID for the particular file. This id is alpha numeric and can be found in described cases below:
+     1. https://drive.google.com/uc?id=FILE_ID&export=download"
+     2. https://drive.google.com/file/d/FILE_ID/view"
+     3. https://drive.google.com/open?id=FILE_ID"
+     4. https://doc-0o-68-docs.googleusercontent.com/docs/securesc/../../../FILE_ID?e=download"
+
+Report bugs/issues [here](https://github.com/chankruze/gdrivedl/issues)
 
 **screenshot**
 
