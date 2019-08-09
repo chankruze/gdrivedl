@@ -1,0 +1,129 @@
+#!/bin/bash
+
+GITHUB_URL="https://github.com/chankruze/gdrivedl/";
+ISSUES_URL="https://github.com/chankruze/gdrivedl/issues";
+WEBSITE_URL="https://rubygems.org/gems/gdrivedl";
+VERSION=$(gem list gdrivedl --remote | grep gdrivedl | cut -d'(' -f2 | cut -d')' -f1);
+
+red=`tput setaf 1`
+green=`tput setaf 2`
+blue=`tput setaf 4`
+yellow=`tput setaf 3`
+reset=`tput sgr0`
+
+banner() {
+clear;
+echo ""
+echo "${blue}"
+echo " ██████╗ ██████╗ ██████╗ ██╗██╗   ██╗███████╗██████╗ ██╗"
+echo "██╔════╝ ██╔══██╗██╔══██╗██║██║   ██║██╔════╝██╔══██╗██║"
+echo "██║  ███╗██║  ██║██████╔╝██║██║   ██║█████╗  ██║  ██║██║"
+echo "██║   ██║██║  ██║██╔══██╗██║╚██╗ ██╔╝██╔══╝  ██║  ██║██║"
+echo "╚██████╔╝██████╔╝██║  ██║██║ ╚████╔╝ ███████╗██████╔╝███████╗"
+echo " ╚═════╝ ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═══╝  ╚══════╝╚═════╝ ╚══════╝"
+echo "${green}>_ Download Google Drive Files From Terminal"
+echo "${reset}=============================================================${yellow}"
+echo "# Version: $VERSION"
+echo "# Developer: chankruze (Chandan Kumar Mandal)"
+echo "# Company: Geekofia"
+echo "# Website: $WEBSITE_URL"
+echo "${reset}============================================================="
+echo ""
+}
+
+usage() {
+    echo "${green}Usage: ${reset}gdrivedl [-i <FILE_ID>] [-s <FILE_NAME>]" 1>&2;
+    echo "";
+}
+
+example() {
+    echo "${green}Example: ${reset}gdrivedl 1xvhbFWetzTf9a1TueWJBcrzzVPycG1dg gdrivedl_demo.txt";
+    echo "";
+}
+
+info() {
+    echo "${green}------- Instructions -------${reset}"
+    echo "The 'FILE_NAME' argument is the name of the file you want to save as."
+    echo "It can also be a path. For example '/home/user/test/demo.zip'"
+    echo ""
+    echo "The 'FILE_ID' argument is the google drive's unique ID for the particular file."
+    echo "This id is alpha numeric and can be found in described cases below:"
+    echo ""
+    echo "  1. https://drive.google.com/uc?id=FILE_ID&export=download"
+    echo "  2. https://drive.google.com/file/d/FILE_ID/view"
+    echo "  3. https://drive.google.com/open?id=FILE_ID"
+    echo "  4. https://doc-0o-68-docs.googleusercontent.com/docs/securesc/../../../FILE_ID?e=download"
+    echo ""
+    echo "Report bugs/issues at <$ISSUES_URL>"
+    echo ""
+}
+
+error() {
+case $1 in
+    1)
+        echo "${red}Error $1: Neither file id nor name provided${reset}";
+        echo "";
+        usage;
+		;;
+	2)
+		echo "${red}Error $1: No file id provided${reset}"
+        echo "";
+        usage;
+		;;
+	3)
+		echo "${red}Error $1: No file name provided${reset}"
+        echo "";
+        usage;
+		;;
+esac
+}
+
+banner;
+
+while getopts ":i:s:h" o; do
+    case "${o}" in
+        i)
+            i=${OPTARG}
+            ;;
+        s)
+            s=${OPTARG}
+            ;;
+        h)
+            usage;
+            example;
+            info
+            ;;
+        *)
+            usage
+            ;;
+    esac
+done
+shift $((OPTIND-1))
+
+if [ -z "${i}" ] && [ -z "${s}" ]; then
+    error 1;
+    exit 1;
+elif [ -z "${i}" ] || [ -z "${s}" ]; then
+if [ -z "${h}" ]; then
+if [ -z "${i}" ]; then
+    error 2;
+    exit 1;
+elif [ -z "${s}" ]; then
+    error 3;
+    exit 1;
+fi
+else
+usage;
+example;
+info;
+fi
+fi
+
+echo "${blue}File ID: ${reset}${i}"
+echo "${blue}File Name (to save as): ${reset}${s}"
+echo ""
+echo "${green}Downloading .....${reset}";
+echo "";
+cookies=$(wget --quiet --save-cookies /tmp/cookies.txt --keep-session-cookies --no-check-certificate "https://docs.google.com/uc?export=download&id=$i" -O- | sed -rn 's/.*confirm=([0-9A-Za-z_]+).*/\1\n/p')
+wget --load-cookies /tmp/cookies.txt "https://docs.google.com/uc?export=download&confirm=$cookies&id=$i" -O $s
+rm -rf /tmp/cookies.txt
