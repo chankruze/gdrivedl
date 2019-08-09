@@ -1,7 +1,7 @@
-# gdrivedl
-An utility to download google drive files with wget from the terminal !
+![](https://www.holded.com/content/assets/media/integration/google-drive/google-drive-logo.png)
 
-## About
+## About gdrivedl
+An utility to download google drive files with wget from the terminal !
 
 - Website : https://geekofia.in/gdrivedl
 - Language : Shell
@@ -10,16 +10,16 @@ Coded with ❤ for developers, will help them downloading files uploaded to goog
  
 ## Installation
 
-Download the debian package from this repo [releases](https://github.com/chankruze/gdrivedl/releases). Then install it as any normal installation.
+Download the latest debian package from this repo [releases](https://github.com/chankruze/gdrivedl/releases) section. Then install it as any normal dpkg installation.
 
 Example:
 ```
-$ sudo dpkg -i gdrivedl_1.0.3_all.deb 
+$ sudo dpkg -i gdrivedl_1.0.4_all.deb 
 Selecting previously unselected package gdrivedl.
 (Reading database ... 246567 files and directories currently installed.)
-Preparing to unpack gdrivedl_1.0.3_all-2.deb ...
-Unpacking gdrivedl (1.0.3) ...
-Setting up gdrivedl (1.0.3) ...
+Preparing to unpack gdrivedl_1.0.4_all.deb ...
+Unpacking gdrivedl (1.0.4) ...
+Setting up gdrivedl (1.0.4) ...
 ```
 
 ## Usage
